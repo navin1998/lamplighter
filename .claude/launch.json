@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "static",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["/private/tmp/claude-502/-Users-navinbharti-projects-personal-zip-game/301fdbb3-735c-4a87-97ff-f05bc7e0cf94/scratchpad/devserver.js"],
+      "port": 8765
+    }
+  ]
+}

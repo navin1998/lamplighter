@@ -1,0 +1,232 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="DuplicatedCode" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <Languages>
+        <language minSize="1341" name="Python" />
+      </Languages>
+    </inspection_tool>
+    <inspection_tool class="HttpUrlsUsage" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredUrls">
+        <list>
+          <option value="http://" />
+          <option value="http://0.0.0.0" />
+          <option value="http://127.0.0.1" />
+          <option value="http://activemq.apache.org/schema/" />
+          <option value="http://cxf.apache.org/schemas/" />
+          <option value="http://java.sun.com/" />
+          <option value="http://javafx.com/fxml" />
+          <option value="http://javafx.com/javafx/" />
+          <option value="http://json-schema.org/draft" />
+          <option value="http://localhost" />
+          <option value="http://maven.apache.org/POM/" />
+          <option value="http://maven.apache.org/xsd/" />
+          <option value="http://primefaces.org/ui" />
+          <option value="http://schema.cloudfoundry.org/spring/" />
+          <option value="http://schemas.xmlsoap.org/" />
+          <option value="http://tiles.apache.org/" />
+          <option value="http://www.ibm.com/webservices/xsd" />
+          <option value="http://www.jboss.com/xml/ns/" />
+          <option value="http://www.jboss.org/j2ee/schema/" />
+          <option value="http://www.springframework.org/schema/" />
+          <option value="http://www.springframework.org/security/tags" />
+          <option value="http://www.springframework.org/tags" />
+          <option value="http://www.thymeleaf.org" />
+          <option value="http://www.w3.org/" />
+          <option value="http://xmlns.jcp.org/" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true" editorAttributes="WARNING_ATTRIBUTES">
+      <option name="ignoredPackages">
+        <list>
+          <option value="pysqlite3-binary" />
+          <option value="pydantic" />
+          <option value="pymongo" />
+          <option value="fonttools" />
+          <option value="click" />
+          <option value="cryptography" />
+          <option value="huggingface-hub" />
+          <option value="jiter" />
+          <option value="openai" />
+          <option value="pydantic-core" />
+          <option value="pyyaml" />
+          <option value="regex" />
+          <option value="safetensors" />
+          <option value="tokenizers" />
+          <option value="torch" />
+          <option value="transformers" />
+          <option value="typing-extensions" />
+          <option value="typing-inspection" />
+          <option value="annotated-doc" />
+          <option value="anyio" />
+          <option value="appdirs" />
+          <option value="attrs" />
+          <option value="backoff" />
+          <option value="beautifulsoup4" />
+          <option value="blinker" />
+          <option value="boilerpy3" />
+          <option value="boto" />
+          <option value="boto3" />
+          <option value="botocore" />
+          <option value="bz2file" />
+          <option value="cattrs" />
+          <option value="certifi" />
+          <option value="chardet" />
+          <option value="charset-normalizer" />
+          <option value="coloredlogs" />
+          <option value="defusedxml" />
+          <option value="distro" />
+          <option value="dnspython" />
+          <option value="docopt" />
+          <option value="docutils" />
+          <option value="elastic-transport" />
+          <option value="elasticsearch" />
+          <option value="Events" />
+          <option value="farm-haystack" />
+          <option value="fastapi" />
+          <option value="filelock" />
+          <option value="Flask" />
+          <option value="flask-cors" />
+          <option value="flatbuffers" />
+          <option value="fsspec" />
+          <option value="gensim" />
+          <option value="geographiclib" />
+          <option value="geopy" />
+          <option value="gevent" />
+          <option value="greenlet" />
+          <option value="gunicorn" />
+          <option value="h11" />
+          <option value="hashring" />
+          <option value="hf-xet" />
+          <option value="httpcore" />
+          <option value="httpx" />
+          <option value="humanfriendly" />
+          <option value="idna" />
+          <option value="inflect" />
+          <option value="itsdangerous" />
+          <option value="Jinja2" />
+          <option value="jmespath" />
+          <option value="joblib" />
+          <option value="jsonschema" />
+          <option value="jsonschema-specifications" />
+          <option value="langdetect" />
+          <option value="lazy-imports" />
+          <option value="lxml" />
+          <option value="magika" />
+          <option value="Markdown" />
+          <option value="markdownify" />
+          <option value="MarkupSafe" />
+          <option value="more-itertools" />
+          <option value="mpmath" />
+          <option value="natsort" />
+          <option value="networkx" />
+          <option value="nltk" />
+          <option value="num2words" />
+          <option value="numpy" />
+          <option value="oauthlib" />
+          <option value="onnxruntime" />
+          <option value="packaging" />
+          <option value="pandas" />
+          <option value="pdf2image" />
+          <option value="pillow" />
+          <option value="platformdirs" />
+          <option value="posthog" />
+          <option value="prompthub-py" />
+          <option value="protobuf" />
+          <option value="psutil" />
+          <option value="pyparsing" />
+          <option value="pytesseract" />
+          <option value="python-dateutil" />
+          <option value="python-docx" />
+          <option value="python-dotenv" />
+          <option value="python-magic" />
+          <option value="python-memcached" />
+          <option value="pytz" />
+          <option value="quantulum3" />
+          <option value="rank-bm25" />
+          <option value="RapidFuzz" />
+          <option value="referencing" />
+          <option value="requests" />
+          <option value="requests-cache" />
+          <option value="requests-oauthlib" />
+          <option value="rpds-py" />
+          <option value="s3transfer" />
+          <option value="sacremoses" />
+          <option value="scikit-learn" />
+          <option value="scipy" />
+          <option value="sentence-transformers" />
+          <option value="sentencepiece" />
+          <option value="singledispatch" />
+          <option value="six" />
+          <option value="smart-open" />
+          <option value="sniffio" />
+          <option value="soupsieve" />
+          <option value="sseclient-py" />
+          <option value="starlette" />
+          <option value="sympy" />
+          <option value="tenacity" />
+          <option value="threadpoolctl" />
+          <option value="tiktoken" />
+          <option value="tqdm" />
+          <option value="typeguard" />
+          <option value="tzdata" />
+          <option value="url-normalize" />
+          <option value="urllib3" />
+          <option value="uvicorn" />
+          <option value="Werkzeug" />
+          <option value="wrapt" />
+          <option value="zipp" />
+          <option value="zope.event" />
+          <option value="zope.interface" />
+          <option value="aiohttp" />
+          <option value="litellm" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8Inspection" enabled="true" level="INFORMATION" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="E501" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyStringConversionWithoutDunderMethodInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="reportedTypes">
+        <list>
+          <option value="object" />
+          <option value="types.FunctionType" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyStubPackagesAdvertiser" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="pandas" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="SqlNoDataSourceInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="VulnerableLibrariesLocal" enabled="false" level="WARNING" enabled_by_default="false">
+      <option name="isIgnoringEnabled" value="true" />
+      <option name="ignoredModules">
+        <list>
+          <option value="mlsynctoolv4" />
+          <option value="mlsynctoolv4" />
+        </list>
+      </option>
+      <option name="ignoredPackages">
+        <list>
+          <option value="null:werkzeug:3.1.3" />
+          <option value="null:requests:2.32.3" />
+        </list>
+      </option>
+      <option name="ignoredReasons">
+        <list>
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

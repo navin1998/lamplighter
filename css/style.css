@@ -1,0 +1,624 @@
+/* A town at night: deep blue-black streets, amber lamplight, one cool
+   accent for the cursor. The board's canvas reads its colours from these
+   same properties, so a theme change is a change here and nowhere else. */
+:root {
+  --night: #080b14;
+  --night-warm: #1a1208;
+  --street: #161c2e;
+  --street-lit: rgba(255, 186, 104, 0.13);
+  --building: #a89a86;
+  --building-edge: #cfc2ae;
+  --lamp-unlit: #b9ad97;
+  --lamp-lit: #ffb54a;
+  --lamp-number-unlit: #ece2cf;
+  --lamp-number-lit: #2b1a04;
+  --ribbon-start: #d0933f;
+  --ribbon-head: #ffd98a;
+  --cursor: #7fd6ff;
+  --refused: #ff9a7a;
+  --text: #ede5d5;
+  --text-muted: #c2b8a6;
+  --control: #222a40;
+  --control-hover: #2d3753;
+
+  --font: "Seravek", "Gill Sans Nova", "Gill Sans", Ubuntu, Calibri, "Segoe UI", "DejaVu Sans", sans-serif;
+  --gutter: 16px;
+  --tap: 44px;
+}
+
+/* High contrast: black streets, white buildings, bright yellow light. */
+body.high-contrast {
+  --night: #000000;
+  --night-warm: #000000;
+  --street: #000000;
+  --street-lit: rgba(255, 255, 255, 0.16);
+  --building: #ffffff;
+  --building-edge: #ffffff;
+  --lamp-unlit: #ffffff;
+  --lamp-lit: #ffd400;
+  --lamp-number-unlit: #ffffff;
+  --lamp-number-lit: #000000;
+  --ribbon-start: #ffd400;
+  --ribbon-head: #fff27a;
+  --cursor: #00e5ff;
+  --refused: #ff8080;
+  --text: #ffffff;
+  --text-muted: #e8e8e8;
+  --control: #000000;
+  --control-hover: #1f1f1f;
+}
+
+body.high-contrast,
+body.high-contrast.town-lit {
+  background: #000000;
+}
+
+body.high-contrast .control,
+body.high-contrast .chapter,
+body.high-contrast .help-panel {
+  border-color: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--night);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 50% 30%, #121a2e 0%, var(--night) 70%);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 18px;
+  line-height: 1.5;
+  transition: background-color 2s ease;
+}
+
+/* The whole town warms once it is walked. */
+body.town-lit {
+  background: radial-gradient(ellipse at 50% 30%, #2a1d0c 0%, var(--night-warm) 75%);
+}
+
+.app {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: var(--gutter);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Anything styled with a display of its own must still obey hidden. */
+[hidden] {
+  display: none !important;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 10px calc(var(--gutter) + var(--tap) + 12px) 0 var(--gutter);
+}
+
+.notice {
+  margin: 0;
+  max-width: 40em;
+  padding: 10px 14px;
+  border: 1px solid #3a4566;
+  border-radius: 10px;
+  background: var(--control);
+}
+
+.screen {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.game-title {
+  margin: 24px 0 0;
+  font-size: 2.4rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.screen-title {
+  margin: 8px 0 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.screen h2 {
+  margin: 18px 0 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.screen p {
+  max-width: 40em;
+}
+
+.rule-lead {
+  font-size: 1.2rem;
+  text-align: center;
+  color: var(--text);
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(100%, 22em);
+  margin-top: 10px;
+}
+
+.menu-item {
+  text-align: center;
+}
+
+.chapter-list {
+  width: min(100%, 40em);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chapter {
+  border: 1px solid #2c3653;
+  border-radius: 12px;
+  background: rgba(22, 28, 46, 0.6);
+}
+
+.chapter-summary {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 14px;
+  min-height: var(--tap);
+  padding: 10px 16px;
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+.chapter-summary:focus-visible {
+  outline: 3px solid var(--cursor);
+  outline-offset: 2px;
+}
+
+.chapter-name {
+  font-weight: 600;
+}
+
+.chapter-meta {
+  color: var(--text-muted);
+}
+
+.town-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: 8px;
+  padding: 4px 16px 16px;
+}
+
+.town-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px;
+}
+
+/* Lit and unlit differ in shape as well as colour: a filled disc against
+   a hollow ring. */
+.lamp-mark {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--lamp-unlit);
+}
+
+.lamp-mark.lit {
+  border-color: var(--lamp-lit);
+  background: var(--lamp-lit);
+  box-shadow: 0 0 8px rgba(255, 181, 74, 0.6);
+}
+
+.town-subtitle {
+  margin: 4px 0 0;
+  color: var(--text-muted);
+}
+
+.board-frame {
+  position: relative;
+}
+
+.board-frame .board {
+  transition: opacity 1.2s ease;
+}
+
+/* A chapter opens on one line over the dark town, then the board. */
+.board-frame.opening-dark .board {
+  opacity: 0.12;
+}
+
+.opening {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  text-align: center;
+  font-size: 1.5rem;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.opening.playing {
+  animation: opening 2.6s ease forwards;
+}
+
+@keyframes opening {
+  0% { opacity: 0; }
+  30% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.field-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.code-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: min(100%, 30em);
+}
+
+.code-text {
+  width: min(100%, 26em);
+  min-height: var(--tap);
+  padding: 8px 12px;
+  border: 1px solid #3a4566;
+  border-radius: 10px;
+  background: #0f1424;
+  color: var(--text);
+  font: inherit;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 16px;
+}
+
+.progress-text {
+  width: min(100%, 36em);
+  padding: 10px 12px;
+  border: 1px solid #3a4566;
+  border-radius: 10px;
+  background: #0f1424;
+  color: var(--text);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 16px;
+}
+
+.settings {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.setting[aria-pressed="true"] {
+  border-color: var(--lamp-lit);
+  background: var(--control-hover);
+}
+
+.stats {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.stats summary {
+  display: inline-flex;
+  align-items: center;
+  list-style: none;
+}
+
+select.control {
+  padding-right: 12px;
+}
+
+a.control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+/* The "?" sits in the same corner on every screen, above everything. */
+.help-toggle {
+  position: fixed;
+  top: 10px;
+  right: var(--gutter);
+  z-index: 30;
+  width: var(--tap);
+  padding: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  border-radius: 50%;
+}
+
+/* Not a modal: on a narrow screen the panel rises from the bottom and
+   leaves the top of the town in view; on a wide one it sits beside it. */
+.help-panel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  height: 50vh;
+  overflow-y: auto;
+  padding: 12px var(--gutter) 24px;
+  background: rgba(11, 15, 26, 0.97);
+  border-top: 1px solid #3a4566;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Room below the page so the town can be scrolled up above the panel. */
+body.help-open {
+  padding-bottom: 50vh;
+}
+
+@media (min-width: 900px) {
+  .help-panel {
+    top: 0;
+    left: auto;
+    width: 440px;
+    height: auto;
+    padding-top: 64px;
+    border-top: none;
+    border-left: 1px solid #3a4566;
+    border-radius: 0;
+  }
+
+  body.help-open {
+    padding-right: 440px;
+    padding-bottom: 0;
+  }
+}
+
+.help-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-right: calc(var(--tap) + 12px);
+}
+
+.help-heading {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.help-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 12px 0;
+}
+
+.help-tab {
+  padding: 8px 12px;
+}
+
+.help-tab[aria-selected="true"] {
+  background: var(--control-hover);
+  border-color: var(--lamp-lit);
+}
+
+.help-page:focus-visible {
+  outline: 3px solid var(--cursor);
+  outline-offset: 4px;
+}
+
+.help-page h3 {
+  margin: 20px 0 4px;
+  font-size: 1.15rem;
+}
+
+.help-page h3:focus-visible {
+  outline: 3px solid var(--cursor);
+  outline-offset: 2px;
+}
+
+.technique {
+  border-top: 1px solid #2c3653;
+  padding-top: 4px;
+}
+
+.lane-slot {
+  margin: 12px 0 20px;
+}
+
+.lane-title {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.lane {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.lane canvas {
+  display: block;
+  border-radius: 6px;
+}
+
+.lane-caption {
+  min-height: 3em;
+  max-width: 26em;
+}
+
+.lane-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.town-header {
+  text-align: center;
+  max-width: 40em;
+}
+
+.town-title {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.rule {
+  margin: 6px 0 0;
+  color: var(--text-muted);
+}
+
+.board {
+  position: relative;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  border-radius: 10px;
+}
+
+.board canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+}
+
+.board canvas.drawing {
+  cursor: crosshair;
+}
+
+.board:focus {
+  outline: none;
+}
+
+.board:focus-visible {
+  outline: 3px solid var(--cursor);
+  outline-offset: 4px;
+}
+
+.status-row {
+  min-height: var(--tap);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.status {
+  margin: 0;
+  color: var(--text);
+}
+
+.status-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.control {
+  min-width: var(--tap);
+  min-height: var(--tap);
+  padding: 8px 20px;
+  border: 1px solid #3a4566;
+  border-radius: 10px;
+  background: var(--control);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.control:hover:not(:disabled) {
+  background: var(--control-hover);
+}
+
+.control:focus-visible {
+  outline: 3px solid var(--cursor);
+  outline-offset: 2px;
+}
+
+.control:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Below 400px the board takes the full width so that even an eight-wide
+   town keeps every square at least 44px. */
+@media (max-width: 400px) {
+  .app {
+    padding: var(--gutter) 0;
+  }
+
+  .town-header,
+  .status-row,
+  .controls,
+  .screen > :not(.board-frame) {
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .control,
+  .board-frame .board {
+    transition: none;
+  }
+}

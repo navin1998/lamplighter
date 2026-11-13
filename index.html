@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Lamplighter</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="topbar" aria-label="Main">
+    <a class="control nav-home" href="#/">The Lamplighter</a>
+    <a class="control" id="nav-back" href="#/chapters">Chapters</a>
+  </nav>
+
+  <button type="button" id="help-toggle" class="control help-toggle" aria-label="Help" aria-expanded="false" aria-controls="help-panel">?</button>
+  <aside id="help-panel" class="help-panel" hidden></aside>
+
+  <main class="app">
+    <p id="notice" class="notice" role="status" hidden></p>
+
+    <section id="screen-title" class="screen" hidden>
+      <h1 class="game-title">The Lamplighter</h1>
+      <p class="rule rule-lead">Draw one unbroken walk that passes through every square of the town exactly once, visiting the numbered lamps in order from 1 upwards.</p>
+      <div class="menu">
+        <a class="control menu-item" id="begin" href="#/town/1-1">Begin</a>
+        <a class="control menu-item" href="#/chapters">Chapters</a>
+        <a class="control menu-item" href="#/daily">Today's town</a>
+        <a class="control menu-item" href="#/endless">Endless</a>
+        <a class="control menu-item" href="#/codes">Share codes and progress</a>
+      </div>
+      <div class="settings" role="group" aria-label="Settings">
+        <button type="button" class="control setting" data-setting="highContrast" aria-pressed="false">High contrast</button>
+        <button type="button" class="control setting" data-setting="largeBoard" aria-pressed="false">Large board</button>
+        <button type="button" class="control setting" data-setting="sound" aria-pressed="false">Sound</button>
+      </div>
+    </section>
+
+    <section id="screen-chapters" class="screen" hidden>
+      <h1 class="screen-title">Chapters</h1>
+      <div id="chapter-list" class="chapter-list"></div>
+    </section>
+
+    <section id="screen-town" class="screen" hidden>
+      <header class="town-header">
+        <h1 id="town-title" class="town-title"></h1>
+        <p id="town-subtitle" class="town-subtitle"></p>
+        <p class="rule">Draw one unbroken walk that passes through every square of the town exactly once, visiting the numbered lamps in order from 1 upwards.</p>
+      </header>
+
+      <div class="board-frame">
+        <div id="board" class="board"></div>
+        <p id="opening" class="opening" aria-hidden="true"></p>
+      </div>
+
+      <div class="status-row">
+        <p id="status" class="status" aria-live="polite"></p>
+        <div id="status-actions" class="status-actions"></div>
+      </div>
+
+      <div class="controls" role="group" aria-label="Walk controls">
+        <button type="button" id="undo" class="control">Undo</button>
+        <button type="button" id="redo" class="control">Redo</button>
+        <button type="button" id="clear" class="control">Clear</button>
+        <button type="button" id="hint" class="control">Hint: where to look</button>
+      </div>
+
+      <div class="controls" role="group" aria-label="Town">
+        <button type="button" id="show-walk" class="control" hidden>Show the walk</button>
+        <a id="next-town" class="control" hidden>Next town</a>
+        <button type="button" id="copy-code" class="control">Share code</button>
+      </div>
+      <div id="code-box" class="code-box" hidden>
+        <label for="code-text">Share code for this town</label>
+        <input id="code-text" class="code-text" type="text" readonly>
+      </div>
+      <div class="settings" role="group" aria-label="Settings">
+        <button type="button" class="control setting" data-setting="highContrast" aria-pressed="false">High contrast</button>
+        <button type="button" class="control setting" data-setting="largeBoard" aria-pressed="false">Large board</button>
+        <button type="button" class="control setting" data-setting="sound" aria-pressed="false">Sound</button>
+      </div>
+    </section>
+
+    <section id="screen-endless" class="screen" hidden>
+      <h1 class="screen-title">Endless</h1>
+      <p>A fresh town every time, laid out on the spot. Each one has a seed; the same seed always makes the same town.</p>
+      <div class="field-row">
+        <label for="endless-size">Size</label>
+        <select id="endless-size" class="control"></select>
+        <label for="endless-label">Feel</label>
+        <select id="endless-label" class="control"></select>
+      </div>
+      <div class="field-row">
+        <button type="button" id="endless-go" class="control">Find a town</button>
+        <button type="button" id="endless-stop" class="control" hidden>Stop</button>
+      </div>
+      <p id="endless-status" class="status" aria-live="polite"></p>
+      <div class="field-row">
+        <label for="endless-seed">Play a seed</label>
+        <input id="endless-seed" class="control code-text" type="text" placeholder="6x6-3141592" autocomplete="off" spellcheck="false">
+        <button type="button" id="endless-seed-go" class="control">Play</button>
+      </div>
+    </section>
+
+    <section id="screen-codes" class="screen" hidden>
+      <h1 class="screen-title">Share codes and progress</h1>
+      <h2>Play a share code</h2>
+      <div class="field-row">
+        <label class="visually-hidden" for="share-input">Share code</label>
+        <input id="share-input" class="control code-text" type="text" placeholder="Paste a share code" autocomplete="off" spellcheck="false">
+        <button type="button" id="share-go" class="control">Play</button>
+      </div>
+      <p id="share-status" class="status" aria-live="polite"></p>
+
+      <h2>Your progress</h2>
+      <p>There is no account and no server, so progress lives in this browser. To move it to another one, copy it out here and paste it in there. Importing only ever adds to what is already here.</p>
+      <div class="field-row">
+        <button type="button" id="export-go" class="control">Copy my progress</button>
+      </div>
+      <label class="visually-hidden" for="progress-text">Progress string</label>
+      <textarea id="progress-text" class="progress-text" rows="4" spellcheck="false" placeholder="Paste a progress string here to bring it in"></textarea>
+      <div class="field-row">
+        <button type="button" id="import-go" class="control">Bring it in</button>
+      </div>
+      <p id="progress-status" class="status" aria-live="polite"></p>
+
+      <details class="stats">
+        <summary class="control">Your private stats</summary>
+        <p id="stats-hints"></p>
+      </details>
+    </section>
+  </main>
+
+  <script src="js/prng.js"></script>
+  <script src="js/grid.js"></script>
+  <script src="js/path.js"></script>
+  <script src="js/techniques.js"></script>
+  <script src="js/solver.js"></script>
+  <script src="js/rater.js"></script>
+  <script src="js/generator.js"></script>
+  <script src="js/chapters.js"></script>
+  <script src="js/names.js"></script>
+  <script src="js/catalogue.js"></script>
+  <script src="js/daily.js"></script>
+  <script src="js/dailypool.js"></script>
+  <script src="js/endless.js"></script>
+  <script src="js/hints.js"></script>
+  <script src="js/helpcontent.js"></script>
+  <script src="js/board.js"></script>
+  <script src="js/demo.js"></script>
+  <script src="js/sound.js"></script>
+  <script src="js/progress.js"></script>
+  <script src="js/help.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
