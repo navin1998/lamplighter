@@ -109,11 +109,31 @@
     byId('clear').disabled = info.cells.length === 0;
   }
 
+  // The height with the browser's toolbars showing, which a phone keeps
+  // steady while scrolling; innerHeight is only the fallback if the probe
+  // somehow measures nothing.
+  function viewportHeight() {
+    return byId('viewport-probe').offsetHeight || root.innerHeight;
+  }
+
+  function viewportWidth() {
+    return Math.min(root.innerWidth, doc.querySelector('.app').clientWidth);
+  }
+
   function fitBoard() {
     if (!current) return;
     var top = byId('board').getBoundingClientRect().top + root.scrollY;
-    var width = Math.min(root.innerWidth, doc.querySelector('.app').clientWidth);
-    current.board.resize({ width: width, height: Math.max(300, root.innerHeight - top - 170), large: progress.setting('largeBoard') });
+    current.board.resize({ width: viewportWidth(), height: Math.max(300, viewportHeight() - top - 170), large: progress.setting('largeBoard') });
+  }
+
+  // Phones fire resize as the address bar slides in and out while
+  // scrolling; only a real change of size is worth redrawing for.
+  var lastViewport = '';
+  function onWindowResize() {
+    var size = viewportWidth() + 'x' + viewportHeight();
+    if (size === lastViewport) return;
+    lastViewport = size;
+    fitBoard();
   }
 
   // --- settings ---------------------------------------------------------------
@@ -214,6 +234,9 @@
         showNotice();
       },
       onMessage: function (text, reason) {
+        // A tap on a lit board must not wipe out a choice still on offer,
+        // such as "Light the town" under reduced motion.
+        if (reason === 'locked' && statusActions.childNodes.length > 0) return;
         if (reason === LAMP.path.REASONS.MUST_START_AT_LAMP_1) {
           if (current.saidStartRule) return;
           current.saidStartRule = true;
@@ -378,7 +401,7 @@
         current.board.redo();
       }
     });
-    root.addEventListener('resize', fitBoard);
+    root.addEventListener('resize', onWindowResize);
   }
 
   function gridOf(entry) {

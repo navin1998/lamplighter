@@ -16,6 +16,7 @@
   var LAMP = root.LAMP;
   var pathLib = LAMP.path;
   var REASONS = pathLib.REASONS;
+  var LOCKED_TEXT = 'This town is lit. Clear the walk to walk it again.';
 
   var MIN_CELL = 44;
   var MAX_CELL = 88;
@@ -619,13 +620,24 @@
       return {
         cells: state.cells(),
         complete: pathLib.isComplete(grid, state.cells()),
-        canUndo: state.canUndo(),
+        canUndo: state.canUndo() && !locked(),
+        locked: locked(),
         canRedo: state.canRedo(),
         lampsLit: lampsLitOn(state.cells()),
         lampCount: grid.lampCount,
         refused: refusedThisGesture,
         drawing: draw !== null
       };
+    }
+
+    // A lit town stays exactly as it was walked until the player clears it;
+    // no touch, key or undo on the board can change it before then.
+    function locked() {
+      return pathLib.isComplete(grid, state.cells());
+    }
+
+    function sayLocked() {
+      if (options.onMessage) options.onMessage(LOCKED_TEXT, 'locked');
     }
 
     function refuse(reason, cell) {
@@ -825,6 +837,10 @@
       var point = pointerPoint(event);
       var cell = cellAt(point.x, point.y);
       if (cell === null) return;
+      if (locked()) {
+        sayLocked();
+        return;
+      }
       lastRefusedCell = -1;
       refusedThisGesture = false;
 
@@ -899,6 +915,10 @@
       refusedThisGesture = false;
       if (arrow) {
         event.preventDefault();
+        if (locked()) {
+          sayLocked();
+          return;
+        }
         var walk = state.cells();
         if (walk.length === 0) {
           working = [grid.lampCells[0]];
@@ -937,9 +957,28 @@
     var api = {
       resize: resize,
       info: info,
-      undo: function () { endReplay(); endDraw(true); refusedThisGesture = false; if (state.undo()) changed(); },
+      undo: function () {
+        endReplay();
+        endDraw(true);
+        if (locked()) {
+          sayLocked();
+          return;
+        }
+        refusedThisGesture = false;
+        if (state.undo()) changed();
+      },
+      // Redo is left open on a lit walk: the only thing it can redo there
+      // is a Clear the player undid.
       redo: function () { endReplay(); endDraw(true); refusedThisGesture = false; if (state.redo()) changed(); },
-      retreat: function () { endReplay(); endDraw(true); if (state.retreat().ok) changed(); },
+      retreat: function () {
+        endReplay();
+        endDraw(true);
+        if (locked()) {
+          sayLocked();
+          return;
+        }
+        if (state.retreat().ok) changed();
+      },
       clear: function () { endReplay(); endDraw(true); refusedThisGesture = false; if (state.clear().ok) changed(); },
       replay: startReplay,
       endReplay: endReplay,

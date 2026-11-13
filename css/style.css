@@ -587,6 +587,20 @@ body.help-open {
   cursor: default;
 }
 
+/* Measures the screen's height with the browser's toolbars showing. On a
+   phone that height stays put while scrolling hides and shows the address
+   bar, so the board is sized from it and never jumps mid-scroll. */
+.viewport-probe {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100vh;
+  height: 100svh;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
